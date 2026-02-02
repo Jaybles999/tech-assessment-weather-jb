@@ -1,9 +1,12 @@
+
 export function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="font-medium">Hello World</div>
-    </div>
-  )
+return (
+    <>
+        <div>
+            <h1 className="text-indigo-500">Hello World</h1>
+        </div>
+    </>
+)
 }
 
-export default App
+export default App;
