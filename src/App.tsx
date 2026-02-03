@@ -6,43 +6,20 @@ import { useWeatherStore } from "./stores/weather-store";
 
 export function App() {
 
-    // get state and actions from store
+    // get state from store
     const weather = useWeatherStore(state => state.weather);
-    const locations = useWeatherStore(state => state.locations);
     const isLoading = useWeatherStore(state => state.isLoading);
     const error = useWeatherStore(state => state.error);
-    const selectLocation = useWeatherStore(state => state.selectLocation);
-
-    const showLocations = locations.length > 0;
 
     return (
         <MainLayout>
-            <div className="flex flex-col items-center justify-center space-y-6">
-
-                {/* location search results */}
-                {showLocations && (
-                    <div className="">
-                        <p className="">
-                            Select a location:
-                        </p>
-                        {locations.map((location) => (
-                            <button
-                                key={location.id}
-                                onClick={() => selectLocation(location)}
-                                className="w-full px-4 py-3 text-left hover:bg-black/10 transition-colors cursor-pointer border-b border-white/10 last:border-b-0"
-                            >
-                                <span className="font-medium">{location.name}</span>
-                                <span className="text-xs text-muted-foreground ml-2">{location.country}</span>
-                            </button>
-                        ))}
-                    </div>
-                )}
+            <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
 
                 {/* loading state */}
                 {isLoading && (
                     <div className="flex items-center gap-2 mb-6">
-                        <Loader2 className="w-6 h-6 animate-spin" />
-                        <span>Loading...</span>
+                        <Loader2 className="w-6 h-6 animate-spin text-primary-foreground/60" />
+                        <span className="text-primary-foreground/60">Loading...</span>
                     </div>
                 )}
 

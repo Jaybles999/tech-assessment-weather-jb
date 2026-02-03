@@ -39,15 +39,12 @@ export const useWeatherStore = create<WeatherStore>((set) => ({
             return;
         }
 
-        set({ isLoading: true, error: null });
-
         try {
             const locations = await searchLocations(query);
-            set({ locations, isLoading: false });
+            set({ locations });
         } catch (err) {
             set({
                 error: err instanceof Error ? err.message : 'Failed to search locations.',
-                isLoading: false,
             })
         }
     },
