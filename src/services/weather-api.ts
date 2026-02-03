@@ -43,7 +43,16 @@ export async function getWeather(
     url.searchParams.set('longitude', longitude.toString());
     url.searchParams.set('current_weather', 'true');
     url.searchParams.set('hourly', 'relativehumidity_2m,precipitation,pressure_msl');
-    url.searchParams.set('daily', 'temperature_2m_max,temperature_2m_min,weathercode,sunrise,sunset');
+    url.searchParams.set('daily', [
+        'temperature_2m_max',
+        'temperature_2m_min',
+        'weathercode',
+        'sunrise',
+        'sunset',
+        'windspeed_10m_max',
+        'winddirection_10m_dominant',
+        'precipitation_sum'
+    ].join(','));
     url.searchParams.set('timezone', 'auto');
     url.searchParams.set('past_days', '3');
     url.searchParams.set('forecast_days', '4'); // today + 3
@@ -58,6 +67,45 @@ export async function getWeather(
 
     // return the data in WeatherData format
     return transformAPIResponse(data, locationName);
+}
+
+// calculate the daily average from the hourly array
+function getDailyAverage(hourlyData: number[], dayIndex: number): number {
+    const startIndex = dayIndex * 24;
+    const dayValues = hourlyData.slice(startIndex, startIndex + 24);
+
+    // filter out null and invalid values
+    const validValues = dayValues.filter((v) => v != null && !isNaN(v));
+    if (validValues.length === 0) return 0;
+
+    // calculate the average
+    const sum = validValues.reduce((acc, val) => acc + val, 0);
+    return Math.round(sum / validValues.length);
+}
+
+// build a DailyForecast object from the daily and hourly data
+function buildDailyForecast(
+    daily: OpenMeteoResponse['daily'],
+    hourly: OpenMeteoResponse['hourly'],
+    dayIndex: number
+): DailyForecast {
+    const maxTemp = Math.round(daily.temperature_2m_max[dayIndex]);
+    const minTemp = Math.round(daily.temperature_2m_min[dayIndex]);
+
+    return {
+        date: daily.time[dayIndex],
+        maxTemp,
+        minTemp,
+        avgTemp: Math.round((maxTemp + minTemp) / 2),
+        weatherCode: daily.weathercode[dayIndex],
+        windSpeed: Math.round(daily.windspeed_10m_max[dayIndex] ?? 0),
+        windDirection: Math.round(daily.winddirection_10m_dominant[dayIndex] ?? 0),
+        humidity: getDailyAverage(hourly.relativehumidity_2m, dayIndex),
+        precipitation: Math.round((daily.precipitation_sum[dayIndex] ?? 0) * 10) / 10,
+        pressure: getDailyAverage(hourly.pressure_msl, dayIndex),
+        sunrise: daily.sunrise[dayIndex] ?? '',
+        sunset: daily.sunset[dayIndex] ?? '',
+    };
 }
 
 // transform the API response to the WeatherData format
@@ -78,21 +126,11 @@ function transformAPIResponse(
         return hourTime.getHours() === now.getHours() && hourTime.toDateString() === now.toDateString();
     }) || todayIndex * 24 + now.getHours(); // fallback to today's hour
 
-    // build the history by slicing the daily data for the past 3 days
-    const history: DailyForecast[] = daily.time.slice(0, todayIndex).map((date, i) => ({
-        date,
-        maxTemp: Math.round(daily.temperature_2m_max[i]),
-        minTemp: Math.round(daily.temperature_2m_min[i]),
-        weatherCode: daily.weathercode[i],
-    }));
+    // build the history by building DailyForecast objects for the past 3 days
+    const history: DailyForecast[] = [0, 1, 2].map(i => buildDailyForecast(daily, hourly, i));
 
-    // build the forecast by slicing the daily data for the next 3 days
-    const forecast: DailyForecast[] = daily.time.slice(todayIndex + 1, todayIndex + 4).map((date, i) => ({
-        date,
-        maxTemp: Math.round(daily.temperature_2m_max[todayIndex + i + 1]),
-        minTemp: Math.round(daily.temperature_2m_min[todayIndex + i + 1]),
-        weatherCode: daily.weathercode[todayIndex + i + 1],
-    }));
+    // build the forecast by building DailyForecast objects for the next 3 days
+    const forecast: DailyForecast[] = [todayIndex + 1, todayIndex + 2, todayIndex + 3].map(i => buildDailyForecast(daily, hourly, i));
 
     // return the data in WeatherData format
     return {

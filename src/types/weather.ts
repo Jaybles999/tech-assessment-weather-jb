@@ -12,7 +12,15 @@ export interface DailyForecast {
     date: string;
     maxTemp: number;
     minTemp: number;
+    avgTemp: number;
     weatherCode: number;
+    windSpeed: number;
+    windDirection: number;
+    humidity: number;
+    precipitation: number;
+    pressure: number;
+    sunrise: string;
+    sunset: string;
 }
 
 // type for formatted weather data
@@ -56,6 +64,9 @@ export interface OpenMeteoResponse {
         weathercode: number[];
         sunrise: string[];
         sunset: string[];
+        windspeed_10m_max: number[];
+        winddirection_10m_dominant: number[];
+        precipitation_sum: number[];
     };
 }
 
