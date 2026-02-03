@@ -1,84 +1,26 @@
-import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
 import { MainLayout } from "./components/layout/main-layout";
-import type { WeatherData, GeoLocation } from "./types/weather";
-import { getWeather, searchLocations } from "./services/weather-api";
 import { getWeatherDescription } from "./utils";
-import { Input } from "./components/ui/input";
-import { Button } from "./components/ui/button";
+import { useWeatherStore } from "./stores/weather-store";
 
 export function App() {
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [weather, setWeather] = useState<WeatherData | null>(null);
-    const [locations, setLocations] = useState<GeoLocation[]>([]);
-    const [showLocations, setShowLocations] = useState(false);
-    const [searchValue, setSearchValue] = useState('');
+    // get state and actions from store
+    const weather = useWeatherStore(state => state.weather);
+    const locations = useWeatherStore(state => state.locations);
+    const isLoading = useWeatherStore(state => state.isLoading);
+    const error = useWeatherStore(state => state.error);
+    const selectLocation = useWeatherStore(state => state.selectLocation);
 
-    const handleSearch = async (query: string) => {
-        if (!query.trim()) return;
-
-        setIsLoading(true);
-        setError(null);
-        setShowLocations(true);
-
-        try {
-            const results = await searchLocations(query);
-            setLocations(results);
-            console.log('Search results:', results);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Search failed');
-            console.error('Search error:', err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleLocationSelect = async (location: GeoLocation) => {
-        setIsLoading(true);
-        setError(null);
-        setShowLocations(false);
-        setLocations([]);
-
-        try {
-            const data = await getWeather(
-                location.latitude,
-                location.longitude,
-                `${location.name}, ${location.country}`
-            );
-            setWeather(data);
-            console.log('Weather data:', data);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to fetch weather');
-            console.error('Weather error:', err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const showLocations = locations.length > 0;
 
     return (
         <MainLayout>
             <div className="flex flex-col items-center justify-center space-y-6">
-                {/* temporary search input */}
-                <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                    e.preventDefault();
-                    handleSearch(searchValue);
-                }}>
-                    <div className="flex items-center gap-2">
-                        <Input
-                            name="city"
-                            placeholder="Search for a city..."
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
-                        />
-                        <Button variant="outline" type="submit">Search</Button>
-                    </div>
-                </form>
 
                 {/* location search results */}
-                {showLocations && locations.length > 0 && (
+                {showLocations && (
                     <div className="">
                         <p className="">
                             Select a location:
@@ -86,7 +28,7 @@ export function App() {
                         {locations.map((location) => (
                             <button
                                 key={location.id}
-                                onClick={() => handleLocationSelect(location)}
+                                onClick={() => selectLocation(location)}
                                 className="w-full px-4 py-3 text-left hover:bg-black/10 transition-colors cursor-pointer border-b border-white/10 last:border-b-0"
                             >
                                 <span className="font-medium">{location.name}</span>

@@ -1,15 +1,21 @@
+import { useState } from 'react';
 import { CloudSun } from 'lucide-react';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import { useWeatherStore } from '@/stores/weather-store';
 
 export const Header = () => {
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const [searchValue, setSearchValue] = useState('');
+    const searchCity = useWeatherStore(state => state.searchCity);
+
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const formData = new FormData(e.target as HTMLFormElement);
-        const city = formData.get('city') as string;
-        alert(city);
+        
+        if (searchValue.trim()) {
+            searchCity(searchValue);
+        }
     }
 
     return (
@@ -22,8 +28,11 @@ export const Header = () => {
 
                 <form onSubmit={handleSubmit} className="flex items-center gap-2 w-full sm:w-auto">
                     <Input
+                        type="text"
                         name="city"
                         placeholder="Search for a city.."
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
                     />
                     <Button variant="outline" type="submit">Search</Button>
                 </form>
