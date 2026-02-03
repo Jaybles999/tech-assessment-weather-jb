@@ -1,9 +1,9 @@
 import { Loader2 } from "lucide-react";
 
 import { MainLayout } from "./components/layout/main-layout";
-import { getWeatherDescription } from "./utils";
 import { useWeatherStore } from "./stores/weather-store";
 import { CurrentWeather } from "./components/weather/current-weather";
+import { DayCardGrid } from "./components/weather/day-card-grid";
 
 export function App() {
 
@@ -33,22 +33,10 @@ export function App() {
 
                 {/* weather data */}
                 {weather && !isLoading && (
-                    <div>
+                    <div className="w-full max-w-2xl space-y-6">
                         <CurrentWeather />
-                        <div className="bg-background mt-4 p-8 rounded-xl shadow-sm border border-border text-center">
-                            <p className="text-muted-foreground">
-                                History: {weather.history.map((day) => (
-                                    <div key={day.date}>
-                                        {day.date}: {day.maxTemp}°C - {day.minTemp}°C - {getWeatherDescription(day.weatherCode)}
-                                    </div>
-                                ))}
-                                Forecast: {weather.forecast.map((day) => (
-                                    <div key={day.date}>
-                                        {day.date}: {day.maxTemp}°C - {day.minTemp}°C - {getWeatherDescription(day.weatherCode)}
-                                    </div>
-                                ))}
-                            </p>
-                        </div>
+                        <DayCardGrid title="Past 3 days" days={weather.history} />
+                        <DayCardGrid title="Next 3 days" days={weather.forecast} />
                     </div>
                 )}
             </div>
