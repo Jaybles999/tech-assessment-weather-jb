@@ -3,6 +3,7 @@ import { Loader2 } from "lucide-react";
 import { MainLayout } from "./components/layout/main-layout";
 import { getWeatherDescription } from "./utils";
 import { useWeatherStore } from "./stores/weather-store";
+import { CurrentWeather } from "./components/weather/current-weather";
 
 export function App() {
 
@@ -13,7 +14,7 @@ export function App() {
 
     return (
         <MainLayout>
-            <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-primary-foreground">
 
                 {/* loading state */}
                 {isLoading && (
@@ -32,31 +33,22 @@ export function App() {
 
                 {/* weather data */}
                 {weather && !isLoading && (
-                    <div className="bg-background p-8 rounded-xl shadow-sm border border-border text-center">
-                        <h2 className="text-2xl font-semibold text-primary mb-2">Weather in {weather.locationName}</h2>
-                        <p className="text-muted-foreground">
-                            Current temperature: {weather.current.temp}°C<br />
-                            High: {weather.current.maxTemp}°C<br />
-                            Low: {weather.current.minTemp}°C<br />
-                            Wind speed: {weather.current.windSpeed} km/h<br />
-                            Wind direction: {weather.current.windDirection}°<br />
-                            Humidity: {weather.current.humidity}%<br />
-                            Precipitation: {weather.current.precipitation} mm<br />
-                            Pressure: {weather.current.pressure} hPa<br />
-                            Sunrise: {weather.current.sunrise}<br />
-                            Sunset: {weather.current.sunset}<br />
-                            Weather code: {getWeatherDescription(weather.current.weatherCode)}<br />
-                            History: {weather.history.map((day) => (
-                                <div key={day.date}>
-                                    {day.date}: {day.maxTemp}°C - {day.minTemp}°C - {getWeatherDescription(day.weatherCode)}
-                                </div>
-                            ))}
-                            Forecast: {weather.forecast.map((day) => (
-                                <div key={day.date}>
-                                    {day.date}: {day.maxTemp}°C - {day.minTemp}°C - {getWeatherDescription(day.weatherCode)}
-                                </div>
-                            ))}
-                        </p>
+                    <div>
+                        <CurrentWeather />
+                        <div className="bg-background mt-4 p-8 rounded-xl shadow-sm border border-border text-center">
+                            <p className="text-muted-foreground">
+                                History: {weather.history.map((day) => (
+                                    <div key={day.date}>
+                                        {day.date}: {day.maxTemp}°C - {day.minTemp}°C - {getWeatherDescription(day.weatherCode)}
+                                    </div>
+                                ))}
+                                Forecast: {weather.forecast.map((day) => (
+                                    <div key={day.date}>
+                                        {day.date}: {day.maxTemp}°C - {day.minTemp}°C - {getWeatherDescription(day.weatherCode)}
+                                    </div>
+                                ))}
+                            </p>
+                        </div>
                     </div>
                 )}
             </div>

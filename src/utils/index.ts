@@ -35,3 +35,22 @@ const WMO_CODES: Record<number, string> = {
 export function getWeatherDescription(code: number): string {
     return WMO_CODES[code] ?? 'Unknown';
 }
+
+// get wind direction from degrees
+export function getWindDirection(degrees: number): string {
+    const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
+        'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const index = Math.round(degrees / 22.5) % 16;
+    return directions[index];
+}
+
+// format time from ISO string to HH:MM
+export function formatTime(isoString: string): string {
+    if (!isoString) return '--:--';
+    const date = new Date(isoString);
+    return date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    });
+}
