@@ -4,6 +4,7 @@ import { MainLayout } from "./components/layout/main-layout";
 import { useWeatherStore } from "./stores/weather-store";
 import { CurrentWeather } from "./components/weather/current-weather";
 import { DayCardGrid } from "./components/weather/day-card-grid";
+import { WelcomeScreen } from "./components/empty-states/welcome-screen";
 
 export function App() {
 
@@ -37,6 +38,11 @@ export function App() {
                         <CurrentWeather />
                         <DayCardGrid />
                     </div>
+                )}
+
+                {/* welcome screen */}
+                {!weather && !isLoading && !error && (
+                    <WelcomeScreen />
                 )}
             </div>
         </MainLayout>

@@ -39,7 +39,7 @@ export const Header = () => {
                 {/* logo and title */}
                 <div className="flex items-center gap-2 text-primary-foreground">
                     <CloudSun className="w-8 h-8" />
-                    <h1 className="text-xl font-bold text-primary-foreground">JB Weather</h1>
+                    <h1 className="text-xl font-bold text-primary-foreground">Weatherly</h1>
                 </div>
 
                 {/* search form */}

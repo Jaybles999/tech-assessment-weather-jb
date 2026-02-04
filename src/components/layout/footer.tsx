@@ -1,8 +1,8 @@
 
 export const Footer = () => {
     return (
-        <footer className="py-6 text-center text-slate-400 text-sm">
-            <p>JB Weather | React Tech Assessment</p>
+        <footer className="py-6 text-center text-primary-foreground/40 text-sm">
+            <p>Weatherly | React + Typescript</p>
         </footer>
     )
 }
