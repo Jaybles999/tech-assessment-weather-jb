@@ -1,10 +1,9 @@
-import { Loader2 } from "lucide-react";
-
 import { MainLayout } from "./components/layout/main-layout";
 import { useWeatherStore } from "./stores/weather-store";
 import { CurrentWeather } from "./components/weather/current-weather";
 import { DayCardGrid } from "./components/weather/day-card-grid";
 import { WelcomeScreen } from "./components/empty-states/welcome-screen";
+import { WeatherSkeleton } from "./components/empty-states/weather-skeleton";
 
 export function App() {
 
@@ -18,12 +17,7 @@ export function App() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-primary-foreground">
 
                 {/* loading state */}
-                {isLoading && (
-                    <div className="flex items-center gap-2 mb-6">
-                        <Loader2 className="w-6 h-6 animate-spin text-primary-foreground/60" />
-                        <span className="text-primary-foreground/60">Loading...</span>
-                    </div>
-                )}
+                {isLoading && <WeatherSkeleton />}
 
                 {/* error state */}
                 {error && (

@@ -64,6 +64,7 @@ export const Header = () => {
                             type="submit"
                             variant="secondary"
                             className="bg-primary-foreground/20 hover:bg-primary-foreground/30 text-primary-foreground border-primary-foreground/30"
+                            disabled={isSearching || !searchValue.trim()}
                         >
                             Search
                         </Button>
