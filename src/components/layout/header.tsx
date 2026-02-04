@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CloudSun, Loader2, MapPin } from 'lucide-react';
+import { CloudSun, Loader2, MapPin, History } from 'lucide-react';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
@@ -9,14 +9,17 @@ export const Header = () => {
 
     const [searchValue, setSearchValue] = useState('');
     const [isSearching, setIsSearching] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
 
-    const searchCity = useWeatherStore(state => state.searchCity);
-
+    
     // location state
+    const searchCity = useWeatherStore(state => state.searchCity);
     const locations = useWeatherStore(state => state.locations);
     const selectLocation = useWeatherStore(state => state.selectLocation);
+    const recentSearches = useWeatherStore((state) => state.recentSearches);
 
     const showLocations = locations.length > 0;
+    const showRecentSearches = isFocused && !searchValue.trim() && !showLocations && recentSearches.length > 0;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,6 +35,12 @@ export const Header = () => {
         selectLocation(location);
         setSearchValue('');
     }
+
+    const handleRecentSearchSelect = (location: typeof locations[0]) => {
+        selectLocation(location);
+        setSearchValue('');
+        setIsFocused(false);
+    };
 
     return (
         <header className="bg-background/10 backdrop-blur-md sticky top-0 z-10 border-b border-background/20">
@@ -57,6 +66,8 @@ export const Header = () => {
                                 placeholder="Search city..."
                                 value={searchValue}
                                 onChange={(e) => setSearchValue(e.target.value)}
+                                onFocus={() => setIsFocused(true)}
+                                onBlur={() => setTimeout(() => setIsFocused(false), 150)}
                                 className="pl-9 bg-primary-foreground/20 border-primary-foreground/30 text-primary-foreground placeholder:text-primary-foreground/60 focus:bg-primary-foreground/30"
                             />
                         </div>
@@ -70,7 +81,7 @@ export const Header = () => {
                         </Button>
                     </form>
 
-                    {/* Location Dropdown */}
+                    {/* location dropdown for search results from the API */}
                     {showLocations && (
                         <div className="absolute top-full left-0 right-0 mt-5 bg-primary-foreground/10 backdrop-blur-md rounded-xl border border-primary-foreground/20 shadow-xl z-50 overflow-hidden">
                             <p className="px-4 py-2 text-sm text-primary-foreground/90 border-b border-primary-foreground/20">
@@ -81,6 +92,26 @@ export const Header = () => {
                                     key={loc.id}
                                     onClick={() => handleLocationSelect(loc)}
                                     className="w-full px-4 py-3 text-left text-primary-foreground hover:bg-primary-foreground/10 transition-colors border-b border-primary-foreground/10 last:border-b-0"
+                                >
+                                    <span className="font-medium">{loc.name}</span>
+                                    <span className="text-primary-foreground/60 ml-2">{loc.country}</span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* recent searches dropdown - from the persisted state */}
+                    {showRecentSearches && (
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-primary-foreground/10 backdrop-blur-md rounded-xl border border-primary-foreground/20 shadow-xl z-50 overflow-hidden animate-fade-in-scale">
+                            <p className="px-4 py-2 text-sm text-primary-foreground/60 border-b border-primary-foreground/10 flex items-center gap-2">
+                                <History className="h-3 w-3" />
+                                Recent searches
+                            </p>
+                            {recentSearches.map((loc) => (
+                                <button
+                                    key={loc.id}
+                                    onClick={() => handleRecentSearchSelect(loc)}
+                                    className="w-full px-4 py-3 text-left text-primary-foreground hover:bg-primary-foreground/15 transition-colors border-b border-primary-foreground/10 last:border-b-0"
                                 >
                                     <span className="font-medium">{loc.name}</span>
                                     <span className="text-primary-foreground/60 ml-2">{loc.country}</span>

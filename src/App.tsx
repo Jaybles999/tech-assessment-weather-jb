@@ -4,6 +4,7 @@ import { CurrentWeather } from "./components/weather/current-weather";
 import { DayCardGrid } from "./components/weather/day-card-grid";
 import { WelcomeScreen } from "./components/empty-states/welcome-screen";
 import { WeatherSkeleton } from "./components/empty-states/weather-skeleton";
+import { LastUpdated } from "./components/weather/last-updated";
 
 export function App() {
 
@@ -31,6 +32,7 @@ export function App() {
                     <div className="w-full max-w-4xl space-y-6">
                         <CurrentWeather />
                         <DayCardGrid />
+                        <LastUpdated />
                     </div>
                 )}
 
