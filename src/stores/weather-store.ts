@@ -22,6 +22,7 @@ interface WeatherStore {
     selectLocation: (location: GeoLocation) => Promise<void>;
     refreshWeather: () => Promise<void>;
     selectDay: (day: DailyForecast | null) => void;
+    clearWeather: () => void;
     clearLocations: () => void;
     clearError: () => void;
     reset: () => void;
@@ -142,6 +143,18 @@ export const useWeatherStore = create<WeatherStore>()(
 
             clearError: () => {
                 set({ error: null });
+            },
+
+            clearWeather: () => {
+                // clear all state except recent searches
+                set({
+                    weather: null,
+                    selectedDay: null,
+                    lastLocation: null,
+                    lastUpdated: null,
+                    locations: [],
+                    error: null,
+                });
             },
 
             reset: () => {

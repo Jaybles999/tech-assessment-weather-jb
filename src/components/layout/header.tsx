@@ -17,6 +17,7 @@ export const Header = () => {
     const locations = useWeatherStore(state => state.locations);
     const selectLocation = useWeatherStore(state => state.selectLocation);
     const recentSearches = useWeatherStore((state) => state.recentSearches);
+    const clearWeather = useWeatherStore(state => state.clearWeather);
 
     const showLocations = locations.length > 0;
     const showRecentSearches = isFocused && !searchValue.trim() && !showLocations && recentSearches.length > 0;
@@ -46,10 +47,13 @@ export const Header = () => {
         <header className="bg-background/10 backdrop-blur-md sticky top-0 z-10 border-b border-background/20">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 {/* logo and title */}
-                <div className="flex items-center gap-2 text-primary-foreground">
+                <button
+                    onClick={clearWeather}
+                    className="flex items-center gap-2 text-primary-foreground hover:opacity-80 cursor-pointer"
+                >
                     <CloudSun className="w-8 h-8" />
                     <h1 className="text-xl font-bold text-primary-foreground">Weatherly</h1>
-                </div>
+                </button>
 
                 {/* search form */}
                 <div className="relative w-full sm:w-auto">
