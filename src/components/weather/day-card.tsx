@@ -15,10 +15,10 @@ export const DayCard = ({ day, isSelected, relativeLabel, onClick }: DayCardProp
     return (
         <button
             onClick={onClick}
-            className={`w-[100px] min-w-[100px] max-w-[100px] shrink-0 backdrop-blur-sm rounded-xl p-4 border text-center transition-all duration-200 cursor-pointer
+            className={`w-[100px] min-w-[100px] max-w-[100px] shrink-0 backdrop-blur-sm rounded-xl p-4 border text-center cursor-pointer day-card-hover
                 ${isSelected
-                    ? 'bg-primary-foreground/25 border-primary-foreground ring-2 ring-primary-foreground shadow-lg'
-                    : 'bg-primary-foreground/10 border-primary-foreground/20 hover:bg-primary-foreground/15'}
+                    ? 'bg-primary-foreground/25 border-primary-foreground ring-2 ring-primary-foreground shadow-lg day-card-selected'
+                    : 'bg-primary-foreground/10 border-primary-foreground/20'}
                 }`
             }
         >

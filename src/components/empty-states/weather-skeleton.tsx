@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const WeatherSkeleton = () => {
     return (
-        <div className="w-full max-w-4xl space-y-6 animate-fade-in-scale">
+        <div className="w-full max-w-4xl space-y-6 animate-fade-in">
             {/* current weather card skeleton */}
             <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-6 border border-primary-foreground/20">
                 <Skeleton className="h-8 w-72 mx-auto mb-6 bg-primary-foreground/20" />

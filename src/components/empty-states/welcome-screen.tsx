@@ -2,7 +2,7 @@ import { Cloud, Droplets, Thermometer, Wind } from "lucide-react";
 
 export const WelcomeScreen = () => {
     return (
-        <div className="text-center space-y-6 mt-10 md:mt-0">
+        <div className="text-center space-y-6 mt-10 md:mt-0 animate-fade-in">
             <div className="flex items-center justify-center gap-3">
                 <Cloud className="w-10 h-10 animate-pulse" />
                 <Thermometer className="w-10 h-10 animate-pulse delay-100" />
