@@ -38,6 +38,7 @@ export interface WeatherData {
         sunrise: string;
         sunset: string;
     };
+    today: DailyForecast;
     forecast: DailyForecast[];
     history: DailyForecast[];
     locationName: string;

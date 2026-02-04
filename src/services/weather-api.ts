@@ -129,6 +129,9 @@ function transformAPIResponse(
     // build the history by building DailyForecast objects for the past 3 days
     const history: DailyForecast[] = [0, 1, 2].map(i => buildDailyForecast(daily, hourly, i));
 
+    // build today's DailyForecast object
+    const today: DailyForecast = buildDailyForecast(daily, hourly, todayIndex);
+
     // build the forecast by building DailyForecast objects for the next 3 days
     const forecast: DailyForecast[] = [todayIndex + 1, todayIndex + 2, todayIndex + 3].map(i => buildDailyForecast(daily, hourly, i));
 
@@ -147,6 +150,7 @@ function transformAPIResponse(
             sunrise: daily.sunrise[todayIndex] ?? '',
             sunset: daily.sunset[todayIndex] ?? '',
         },
+        today,
         forecast,
         history,
         locationName,
