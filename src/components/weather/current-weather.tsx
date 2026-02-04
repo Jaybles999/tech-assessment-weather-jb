@@ -54,7 +54,14 @@ export const CurrentWeather = () => {
                     <p className="text-primary-foreground/60 mb-2">{displayData.dayLabel}</p>
                 )}
                 <WeatherIcon code={displayData.weatherCode} className="w-20 h-20 mx-auto mb-2 opacity-90" />
-                <div className="text-7xl font-light mb-2">{displayData.temp}°C</div>
+                <div className="relative inline-block mb-2">
+                    <span className="text-7xl font-light">{displayData.temp}°C</span>
+                    {selectedDay && (
+                        <span className="absolute -right-12 top-3 text-sm font-medium opacity-50 uppercase tracking-widest rotate-90 origin-left">
+                            Avg
+                        </span>
+                    )}
+                </div>
                 <p className="text-xl mb-1">{getWeatherDescription(displayData.weatherCode)}</p>
                 <p className="text-primary-foreground/70">H: {displayData.maxTemp}° L: {displayData.minTemp}°</p>
             </div>
