@@ -2,6 +2,7 @@ import { RefreshCw } from 'lucide-react';
 
 import { useWeatherStore } from '@/stores/weather-store';
 import { useRef, useEffect } from 'react';
+import { useGeolocation } from '@/hooks/use-geolocation';
 
 // formats the timestamp as relative time
 function formatRelativeTime(timestamp: number): string {
@@ -24,9 +25,15 @@ const REFRESH_COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
 
 export function LastUpdated() {
     const lastUpdated = useWeatherStore((state) => state.lastUpdated);
+    const lastLocation = useWeatherStore((state) => state.lastLocation);
     const weather = useWeatherStore((state) => state.weather);
     const refreshWeather = useWeatherStore((state) => state.refreshWeather);
     const isLoading = useWeatherStore((state) => state.isLoading);
+
+    const { requestLocation, isLocating } = useGeolocation();
+
+    // if the last location is null, geolocation was used to get the weather data
+    const isGeolocationMode = lastLocation === null;
 
     // prevents double refresh in strict mode
     const hasAutoRefreshed = useRef(false);
@@ -34,23 +41,34 @@ export function LastUpdated() {
     // auto-refresh the weather data if it is stale
     useEffect(() => {
         if (hasAutoRefreshed.current) return;
-        if (!lastUpdated || isLoading) return;
+        if (!lastUpdated || isLoading || isLocating) return;
 
         // if the data is stale, refresh it
         if (Date.now() - lastUpdated > STALE_THRESHOLD_MS) {
             hasAutoRefreshed.current = true;
-            refreshWeather();
+            // if in geolocation mode, request the location
+            if (isGeolocationMode) {
+                requestLocation();
+            } else {
+                refreshWeather();
+            }
         }
-    }, [lastUpdated, isLoading, refreshWeather]);
+    }, [lastUpdated, isLoading, isLocating, isGeolocationMode, requestLocation, refreshWeather]);
 
     if (!weather || !lastUpdated) return null;
 
     // used to determine if the refresh button is disabled
     const isFresh = Date.now() - lastUpdated < REFRESH_COOLDOWN_MS;
-    const isDisabled = isLoading || isFresh;
+    const isDisabled = isLoading || isLocating || isFresh;
 
     const handleRefresh = () => {
-        if (!isDisabled) {
+        if (isDisabled) return;
+
+        if (isGeolocationMode) {
+            // attempt to geolocate
+            requestLocation();
+        } else {
+            // refresh the weather data for the stored location
             refreshWeather();
         }
     };

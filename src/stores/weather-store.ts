@@ -89,17 +89,20 @@ export const useWeatherStore = create<WeatherStore>()(
                         location.longitude,
                         locationName
                     );
+
+                    // important: geolocation entries have an id of 0
+                    const isGeolocation = location.id === 0;
+
                     // update the weather and persisted state
                     set({
                         weather,
                         isLoading: false,
                         selectedDay: null,
-                        lastLocation: location,
+                        // don't store geolocation entries in the last location state
+                        lastLocation: isGeolocation ? null : location,
                         lastUpdated: Date.now(),
-                        recentSearches: addToRecentSearches(
-                            location,
-                            get().recentSearches
-                        ),
+                        // if a geolocation entry, don't add it to the recent searches
+                        recentSearches: isGeolocation ? get().recentSearches : addToRecentSearches(location, get().recentSearches),
                     });
                 } catch (err) {
                     set({
