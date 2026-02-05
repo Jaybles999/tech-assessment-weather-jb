@@ -1,6 +1,7 @@
 import { RefreshCw } from 'lucide-react';
 
 import { useWeatherStore } from '@/stores/weather-store';
+import { useRef, useEffect } from 'react';
 
 // formats the timestamp as relative time
 function formatRelativeTime(timestamp: number): string {
@@ -17,11 +18,9 @@ function formatRelativeTime(timestamp: number): string {
     return 'over a day ago';
 }
 
-// checks if the data is stale - older than 30 minutes
-function isStale(timestamp: number): boolean {
-    const STALE_THRESHOLD_MS = 30 * 60 * 1000;
-    return Date.now() - timestamp > STALE_THRESHOLD_MS;
-}
+// thresholds for stale data and refresh button cooldown
+const STALE_THRESHOLD_MS = 30 * 60 * 1000; // 30 minutes
+const REFRESH_COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
 
 export function LastUpdated() {
     const lastUpdated = useWeatherStore((state) => state.lastUpdated);
@@ -29,34 +28,44 @@ export function LastUpdated() {
     const refreshWeather = useWeatherStore((state) => state.refreshWeather);
     const isLoading = useWeatherStore((state) => state.isLoading);
 
+    // prevents double refresh in strict mode
+    const hasAutoRefreshed = useRef(false);
+
+    // auto-refresh the weather data if it is stale
+    useEffect(() => {
+        if (hasAutoRefreshed.current) return;
+        if (!lastUpdated || isLoading) return;
+
+        // if the data is stale, refresh it
+        if (Date.now() - lastUpdated > STALE_THRESHOLD_MS) {
+            hasAutoRefreshed.current = true;
+            refreshWeather();
+        }
+    }, [lastUpdated, isLoading, refreshWeather]);
+
     if (!weather || !lastUpdated) return null;
 
-    const stale = isStale(lastUpdated);
+    // used to determine if the refresh button is disabled
+    const isFresh = Date.now() - lastUpdated < REFRESH_COOLDOWN_MS;
+    const isDisabled = isLoading || isFresh;
 
     const handleRefresh = () => {
-        if (!isLoading) {
+        if (!isDisabled) {
             refreshWeather();
         }
     };
 
     return (
-        <div className="text-center text-primary-foreground/60 text-sm py-4">
-            <p className="flex items-center justify-center gap-2">
-                <span className={stale ? 'text-primary-foreground' : ''}>
-                    Updated {formatRelativeTime(lastUpdated)}
-                </span>
-                {/* if the data is stale, show the refresh button */}
-                {stale && (
-                    <button
-                        onClick={handleRefresh}
-                        disabled={isLoading}
-                        className="inline-flex items-center gap-1 text-primary-foreground/80 hover:text-primary-foreground underline transition-colors disabled:opacity-50 cursor-pointer"
-                    >
-                        <RefreshCw className={`h-3 w-3 ${isLoading ? 'animate-spin' : ''}`} />
-                        Refresh
-                    </button>
-                )}
-            </p>
+        <div className="flex items-center justify-center gap-2text-center text-primary-foreground/60 text-sm py-4">
+            <span>Updated {formatRelativeTime(lastUpdated)}</span>
+            <button
+                onClick={handleRefresh}
+                disabled={isDisabled}
+                className="p-1 rounded hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                title={isFresh ? 'Refresh available in a few minutes' : 'Refresh weather data'}
+            >
+                <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            </button>
         </div>
     );
 }
