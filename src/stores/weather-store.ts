@@ -79,10 +79,15 @@ export const useWeatherStore = create<WeatherStore>()(
                 set({ isLoading: true, error: null, locations: [] });
 
                 try {
+                    // remove the trailing comma if no country is present
+                    const locationName = location.country
+                        ? `${location.name}, ${location.country}`
+                        : location.name;
+
                     const weather = await getWeather(
                         location.latitude,
                         location.longitude,
-                        `${location.name}, ${location.country}`
+                        locationName
                     );
                     // update the weather and persisted state
                     set({

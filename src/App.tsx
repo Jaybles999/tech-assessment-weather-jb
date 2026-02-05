@@ -5,8 +5,12 @@ import { DayCardGrid } from "./components/weather/day-card-grid";
 import { WelcomeScreen } from "./components/empty-states/welcome-screen";
 import { WeatherSkeleton } from "./components/empty-states/weather-skeleton";
 import { LastUpdated } from "./components/weather/last-updated";
+import { useGeolocation } from "./hooks/use-geolocation";
+import { LocationBanner } from "./components/weather/location-banner";
 
 export function App() {
+
+    const geolocation = useGeolocation();
 
     // get state from store
     const weather = useWeatherStore(state => state.weather);
@@ -18,7 +22,7 @@ export function App() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-primary-foreground">
 
                 {/* loading state */}
-                {isLoading && <WeatherSkeleton />}
+                {isLoading || geolocation.isLocating && <WeatherSkeleton />}
 
                 {/* error state */}
                 {error && (
@@ -28,7 +32,7 @@ export function App() {
                 )}
 
                 {/* weather data */}
-                {weather && !isLoading && (
+                {weather && !isLoading && !geolocation.isLocating && (
                     <div className="w-full max-w-4xl space-y-6">
                         <CurrentWeather />
                         <DayCardGrid />
@@ -37,10 +41,13 @@ export function App() {
                 )}
 
                 {/* welcome screen */}
-                {!weather && !isLoading && !error && (
+                {!weather && !isLoading && !error && !geolocation.isLocating && (
                     <WelcomeScreen />
                 )}
             </div>
+
+            <LocationBanner geolocation={geolocation} />
+
         </MainLayout>
   );
 }

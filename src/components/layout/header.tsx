@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { CloudSun, Loader2, MapPin, History } from 'lucide-react';
+import { CloudSun, Loader2, MapPin, History, Navigation } from 'lucide-react';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { useWeatherStore } from '@/stores/weather-store';
+import { useGeolocation } from '@/hooks/use-geolocation';
 
 export const Header = () => {
 
@@ -11,6 +12,7 @@ export const Header = () => {
     const [isSearching, setIsSearching] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
+    const { requestLocation, isLocating } = useGeolocation();
     
     // location state
     const searchCity = useWeatherStore(state => state.searchCity);
@@ -83,6 +85,25 @@ export const Header = () => {
                         >
                             Search
                         </Button>
+
+                        {/* use location button */}
+                        {requestLocation && (
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                size="icon"
+                                onClick={requestLocation}
+                                disabled={isLocating}
+                                className="bg-primary-foreground/20 hover:bg-primary-foreground/30 text-primary-foreground border-primary-foreground/30 transition-base shrink-0"
+                                title="Use my location"
+                            >
+                                {isLocating ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                    <Navigation className="h-4 w-4" />
+                                )}
+                            </Button>
+                        )}
                     </form>
 
                     {/* location dropdown for search results from the API */}
