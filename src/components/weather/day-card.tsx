@@ -1,5 +1,6 @@
 import type { DailyForecast } from '@/types/weather';
 import { WeatherIcon } from './weather-icon';
+import { getWeatherDescription } from '@/utils';
 
 interface DayCardProps {
     day: DailyForecast;
@@ -12,9 +13,15 @@ export const DayCard = ({ day, isSelected, relativeLabel, onClick }: DayCardProp
     // get the weekday and convert to short format, e.g. Mon, Tue, etc.
     const weekday = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' });
 
+    // descriptive label for screen readers
+    const weatherDescription = getWeatherDescription(day.weatherCode);
+    const accessibleLabel = `${relativeLabel}, ${weekday}: ${weatherDescription}, High ${day.maxTemp}°, Low ${day.minTemp}°`;
+
     return (
         <button
             onClick={onClick}
+            aria-pressed={isSelected}
+            aria-label={accessibleLabel}
             className={`w-[100px] min-w-[100px] max-w-[100px] shrink-0 backdrop-blur-sm rounded-xl p-4 border text-center cursor-pointer day-card-hover
                 ${isSelected
                     ? 'bg-primary-foreground/25 border-primary-foreground ring-2 ring-primary-foreground shadow-lg day-card-selected'

@@ -26,7 +26,7 @@ export function App() {
 
                 {/* error state */}
                 {error && (
-                    <div className="bg-red-500/20 border border-red-500/50 rounded-xl px-6 py-4 mb-6">
+                    <div role="alert" className="bg-red-500/20 border border-red-500/50 rounded-xl px-6 py-4 mb-6">
                         <p className="text-red-200">{error}</p>
                     </div>
                 )}

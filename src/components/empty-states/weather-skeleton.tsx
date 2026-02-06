@@ -2,7 +2,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const WeatherSkeleton = () => {
     return (
-        <div className="w-full max-w-4xl space-y-6 animate-fade-in">
+        <div
+            role="status"
+            aria-label="Loading weather data"
+            aria-busy="true"
+            className="w-full max-w-4xl space-y-6 animate-fade-in"
+        >
+            {/* screen reader only - loading message */}
+            <span className="sr-only">Loading weather information, please wait.</span>
+            
             {/* current weather card skeleton */}
             <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-6 border border-primary-foreground/20">
                 <Skeleton className="h-8 w-72 mx-auto mb-6 bg-primary-foreground/20" />

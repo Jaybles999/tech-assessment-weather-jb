@@ -47,10 +47,10 @@ export const CurrentWeather = () => {
     const contentKey = selectedDay?.date ?? 'current';
 
     return (
-        <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-6 border border-primary-foreground/20">
-            <h2 className="text-2xl font-bold text-center mb-2">{locationName}</h2>
+        <section aria-labelledby="current-weather-location" className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-6 border border-primary-foreground/20">
+            <h2 id="current-weather-location"  className="text-2xl font-bold text-center mb-2">{locationName}</h2>
 
-            <div className="animate-fade-in" key={contentKey}>
+            <div className="animate-fade-in" key={contentKey} aria-live="polite">
                 {/* main weather display - current or selected day weather */}
                 <div className="text-center mb-6">
                     {/* only display the day label if a day is selected */}
@@ -74,21 +74,21 @@ export const CurrentWeather = () => {
                 <div className="grid grid-cols-3 gap-4 mb-6 pt-4 border-t border-primary-foreground/20">
                     <div className="text-center">
                         <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
-                            <Wind className="w-5 h-5 text-sky-200" />
+                            <Wind className="w-5 h-5 text-sky-200" aria-hidden="true" />
                         </div>
                         <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Wind</p>
                         <p className="font-semibold text-sm">{getWindDirection(displayData.windDirection)} {displayData.windSpeed} <span className="text-xs font-normal opacity-70">km/h</span></p>
                     </div>
                     <div className="text-center">
                         <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
-                            <Sunrise className="w-5 h-5 text-amber-200" />
+                            <Sunrise className="w-5 h-5 text-amber-200" aria-hidden="true" />
                         </div>
                         <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Sunrise</p>
                         <p className="font-semibold text-sm">{formatTime(displayData.sunrise)}</p>
                     </div>
                     <div className="text-center">
                         <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
-                            <Sunset className="w-5 h-5 text-orange-300" />
+                            <Sunset className="w-5 h-5 text-orange-300" aria-hidden="true" />
                         </div>
                         <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Sunset</p>
                         <p className="font-semibold text-sm">{formatTime(displayData.sunset)}</p>
@@ -99,27 +99,27 @@ export const CurrentWeather = () => {
                 <div className="grid grid-cols-3 gap-4 pt-4 border-t border-primary-foreground/20">
                     <div className="text-center">
                         <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
-                            <Droplets className="w-5 h-5 text-indigo-300" />
+                            <Droplets className="w-5 h-5 text-indigo-300" aria-hidden="true" />
                         </div>
                         <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Humidity</p>
                         <p className="font-semibold text-sm">{displayData.humidity}%</p>
                     </div>
                     <div className="text-center">
                         <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
-                            <Cloud className="w-5 h-5 text-blue-300" />
+                            <Cloud className="w-5 h-5 text-blue-300" aria-hidden="true" />
                         </div>
                         <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Precipitation</p>
                         <p className="font-semibold text-sm">{displayData.precipitation} <span className="text-xs font-normal opacity-70">mm</span></p>
                     </div>
                     <div className="text-center">
                         <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
-                            <Thermometer className="w-5 h-5 text-red-200" />
+                            <Thermometer className="w-5 h-5 text-red-200" aria-hidden="true" />
                         </div>
                         <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Pressure</p>
                         <p className="font-semibold text-sm">{displayData.pressure} <span className="text-xs font-normal opacity-70">hPa</span></p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }

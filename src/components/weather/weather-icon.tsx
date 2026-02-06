@@ -7,32 +7,32 @@ interface WeatherIconProps extends LucideProps {
 // renders the weather icon based on the WMO code
 export const WeatherIcon = ({ code, ...props }: WeatherIconProps) => {
     // clear
-    if (code === 0) return <Sun {...props} />;
+    if (code === 0) return <Sun aria-hidden {...props} />;
 
     // mainly clear, partly cloudy
-    if (code <= 2) return <CloudSun {...props} />;
+    if (code <= 2) return <CloudSun aria-hidden {...props} />;
 
     // overcast
-    if (code === 3) return <Cloud {...props} />;
+    if (code === 3) return <Cloud aria-hidden {...props} />;
 
     // fog
-    if (code <= 48) return <CloudFog {...props} />;
+    if (code <= 48) return <CloudFog aria-hidden {...props} />;
 
     // drizzle
-    if (code <= 57) return <CloudDrizzle {...props} />;
+    if (code <= 57) return <CloudDrizzle aria-hidden {...props} />;
 
     // rain
-    if (code <= 67) return <CloudRain {...props} />;
+    if (code <= 67) return <CloudRain aria-hidden {...props} />;
 
     // snow
-    if (code <= 77) return <Snowflake {...props} />;
+    if (code <= 77) return <Snowflake aria-hidden {...props} />;
 
     // rain showers
-    if (code <= 82) return <CloudRain {...props} />;
+    if (code <= 82) return <CloudRain aria-hidden {...props} />;
 
     // snow showers
-    if (code <= 86) return <Snowflake {...props} />;
+    if (code <= 86) return <Snowflake aria-hidden {...props} />;
 
     // thunderstorm
-    return <CloudLightning {...props} />;
+    return <CloudLightning aria-hidden {...props} />;
 }

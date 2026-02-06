@@ -11,13 +11,16 @@ export const LocationBanner = ({ geolocation }: LocationBannerProps) => {
     if (!showBanner) return null;
 
     return (
-        <div className="fixed bottom-0 md:bottom-10 left-0 right-0 z-50 p-2 md:p-4 animate-fade-in">
+        <aside
+            aria-label="Location permission request"
+            className="fixed bottom-0 md:bottom-10 left-0 right-0 z-50 p-2 md:p-4 animate-fade-in"
+        >
             <div className="max-w-2xl mx-auto">
                 <div className="bg-blue-500/95 md:bg-blue-500/85 border border-primary-foreground/20 rounded-lg md:rounded-xl p-2 md:p-4 shadow-2xl">
                     <div className="flex items-center gap-4">
                         {/* icon */}
                         <div className="shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/50 rounded-full flex items-center justify-center">
-                            <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300" />
+                            <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300" aria-hidden="true" />
                         </div>
 
                         {/* text */}
@@ -44,12 +47,12 @@ export const LocationBanner = ({ geolocation }: LocationBannerProps) => {
                                 className="p-1.5 sm:p-2 text-primary-foreground/40 hover:text-primary-foreground/80 hover:bg-primary-foreground/10 rounded-lg transition-colors cursor-pointer"
                                 aria-label="Dismiss"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-5 h-5" aria-hidden="true" />
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </aside>
     );
 }
