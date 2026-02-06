@@ -57,9 +57,9 @@ export const CurrentWeather = () => {
                     {displayData.dayLabel && (
                         <p className="text-primary-foreground/60 mb-2">{displayData.dayLabel}</p>
                     )}
-                    <WeatherIcon code={displayData.weatherCode} className="w-20 h-20 mx-auto mb-2 opacity-90" />
+                    <WeatherIcon code={displayData.weatherCode} className="w-20 h-20 mx-auto mb-2 opacity-90 drop-shadow-lg" />
                     <div className="relative inline-block mb-2">
-                        <span className="text-7xl font-light">{displayData.temp}°C</span>
+                        <span className="text-7xl font-thin tracking-tighter drop-shadow-sm">{displayData.temp}°</span>
                         {selectedDay && (
                             <span className="absolute -right-12 top-3 text-sm font-medium opacity-50 uppercase tracking-widest rotate-90 origin-left">
                                 Avg
@@ -73,38 +73,50 @@ export const CurrentWeather = () => {
                 {/* wind and sunrise / sunset times */}
                 <div className="grid grid-cols-3 gap-4 mb-6 pt-4 border-t border-primary-foreground/20">
                     <div className="text-center">
-                        <Wind className="w-5 h-5 mx-auto mb-1 opacity-70" />
-                        <p className="text-sm text-primary-foreground/70">Wind</p>
-                        <p className="font-semibold">{getWindDirection(displayData.windDirection)} {displayData.windSpeed} km/h</p>
+                        <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
+                            <Wind className="w-5 h-5 text-sky-200" />
+                        </div>
+                        <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Wind</p>
+                        <p className="font-semibold text-sm">{getWindDirection(displayData.windDirection)} {displayData.windSpeed} <span className="text-xs font-normal opacity-70">km/h</span></p>
                     </div>
                     <div className="text-center">
-                        <Sunrise className="w-5 h-5 mx-auto mb-1 opacity-70" />
-                        <p className="text-sm text-primary-foreground/70">Sunrise</p>
-                        <p className="font-semibold">{formatTime(displayData.sunrise)}</p>
+                        <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
+                            <Sunrise className="w-5 h-5 text-amber-200" />
+                        </div>
+                        <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Sunrise</p>
+                        <p className="font-semibold text-sm">{formatTime(displayData.sunrise)}</p>
                     </div>
                     <div className="text-center">
-                        <Sunset className="w-5 h-5 mx-auto mb-1 opacity-70" />
-                        <p className="text-sm text-primary-foreground/70">Sunset</p>
-                        <p className="font-semibold">{formatTime(displayData.sunset)}</p>
+                        <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
+                            <Sunset className="w-5 h-5 text-orange-300" />
+                        </div>
+                        <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Sunset</p>
+                        <p className="font-semibold text-sm">{formatTime(displayData.sunset)}</p>
                     </div>
                 </div>
 
                 {/* humidity, precipitation and pressure */}
                 <div className="grid grid-cols-3 gap-4 pt-4 border-t border-primary-foreground/20">
                     <div className="text-center">
-                        <Droplets className="w-5 h-5 mx-auto mb-1 opacity-70" />
-                        <p className="text-sm text-primary-foreground/70">Humidity</p>
-                        <p className="font-semibold">{displayData.humidity}%</p>
+                        <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
+                            <Droplets className="w-5 h-5 text-indigo-300" />
+                        </div>
+                        <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Humidity</p>
+                        <p className="font-semibold text-sm">{displayData.humidity}%</p>
                     </div>
                     <div className="text-center">
-                        <Cloud className="w-5 h-5 mx-auto mb-1 opacity-70" />
-                        <p className="text-sm text-primary-foreground/70">Precipitation</p>
-                        <p className="font-semibold">{displayData.precipitation} mm</p>
+                        <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
+                            <Cloud className="w-5 h-5 text-blue-300" />
+                        </div>
+                        <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Precipitation</p>
+                        <p className="font-semibold text-sm">{displayData.precipitation} <span className="text-xs font-normal opacity-70">mm</span></p>
                     </div>
                     <div className="text-center">
-                        <Thermometer className="w-5 h-5 mx-auto mb-1 opacity-70" />
-                        <p className="text-sm text-primary-foreground/70">Pressure</p>
-                        <p className="font-semibold">{displayData.pressure} hPa</p>
+                        <div className="bg-primary-foreground/10 p-2 rounded-full w-fit mx-auto mb-2">
+                            <Thermometer className="w-5 h-5 text-red-200" />
+                        </div>
+                        <p className="text-xs text-primary-foreground/60 mb-1 uppercase tracking-wider">Pressure</p>
+                        <p className="font-semibold text-sm">{displayData.pressure} <span className="text-xs font-normal opacity-70">hPa</span></p>
                     </div>
                 </div>
             </div>

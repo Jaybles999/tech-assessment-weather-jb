@@ -19,10 +19,10 @@ export function App() {
 
     return (
         <MainLayout>
-            <div className="flex flex-col items-center justify-center min-h-[60vh] text-primary-foreground">
+            <div className="flex flex-col items-center justify-center grow w-full text-primary-foreground">
 
                 {/* loading state */}
-                {isLoading || geolocation.isLocating && <WeatherSkeleton />}
+                {(isLoading || geolocation.isLocating) && <WeatherSkeleton />}
 
                 {/* error state */}
                 {error && (
@@ -33,7 +33,7 @@ export function App() {
 
                 {/* weather data */}
                 {weather && !isLoading && !geolocation.isLocating && (
-                    <div className="w-full max-w-4xl space-y-6">
+                    <div className="w-full max-w-4xl space-y-4">
                         <CurrentWeather />
                         <DayCardGrid />
                         <LastUpdated />

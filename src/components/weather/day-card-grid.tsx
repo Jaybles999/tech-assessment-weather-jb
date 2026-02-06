@@ -44,7 +44,7 @@ export const DayCardGrid = () => {
     return (
         <div className="w-full">
             {/* <h3 className="text-lg font-semibold mb-4 text-center">7-Day Overview</h3> */}
-            <div className="flex justify-center gap-3 overflow-x-auto py-2 px-1">
+            <div className="flex justify-center gap-3 overflow-x-auto pt-2 pb-4 px-1">
                 {days.map((day, i) => (
                     <DayCard
                         key={day.date}
@@ -55,6 +55,10 @@ export const DayCardGrid = () => {
                     />
                 ))}
             </div>
+            {/* mobile only - show swipe hint */}
+            <p className="text-center text-primary-foreground/40 text-xs mt-2 md:hidden">
+                &larr; Swipe for more &rarr;
+            </p>
         </div>
     );
 }

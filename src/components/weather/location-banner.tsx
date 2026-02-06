@@ -11,13 +11,13 @@ export const LocationBanner = ({ geolocation }: LocationBannerProps) => {
     if (!showBanner) return null;
 
     return (
-        <div className="fixed bottom-10 left-0 right-0 z-50 p-4 animate-fade-in">
+        <div className="fixed bottom-0 md:bottom-10 left-0 right-0 z-50 p-2 md:p-4 animate-fade-in">
             <div className="max-w-2xl mx-auto">
-                <div className="bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 rounded-2xl p-4 shadow-2xl">
+                <div className="bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 rounded-lg md:rounded-xl p-2 md:p-4 shadow-2xl">
                     <div className="flex items-center gap-4">
                         {/* icon */}
-                        <div className="shrink-0 w-10 h-10 bg-blue-500/50 rounded-full flex items-center justify-center">
-                            <MapPin className="w-5 h-5 text-blue-300" />
+                        <div className="shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/50 rounded-full flex items-center justify-center">
+                            <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300" />
                         </div>
 
                         {/* text */}
@@ -25,23 +25,23 @@ export const LocationBanner = ({ geolocation }: LocationBannerProps) => {
                             <p className="text-primary-foreground font-medium text-sm">
                                 Get local weather
                             </p>
-                            <p className="text-primary-foreground/60 text-xs mt-0.5">
+                            <p className="text-primary-foreground/60 text-xs mt-0.5 hidden md:block">
                                 Use your location for instant weather updates
                             </p>
                         </div>
 
                         {/* actions */}
-                        <div className="flex items-center gap-2 shrink-0">
+                        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
                             <button
                                 onClick={requestLocation}
                                 disabled={isLocating}
-                                className="px-4 py-2 bg-blue-500 hover:bg-blue-400 disabled:bg-blue-500/50 text-primary-foreground text-sm font-medium rounded-md transition-colors cursor-pointer"
+                                className="px-3 py-1.5 sm:px-4 sm:py-2 bg-blue-500 hover:bg-blue-400 disabled:bg-blue-500/50 text-primary-foreground text-sm font-medium rounded-md transition-colors cursor-pointer"
                             >
                                 {isLocating ? 'Locating...' : 'Use Location'}
                             </button>
                             <button
                                 onClick={dismissBanner}
-                                className="p-2 text-primary-foreground/40 hover:text-primary-foreground/80 hover:bg-primary-foreground/10 rounded-lg transition-colors cursor-pointer"
+                                className="p-1.5 sm:p-2 text-primary-foreground/40 hover:text-primary-foreground/80 hover:bg-primary-foreground/10 rounded-lg transition-colors cursor-pointer"
                                 aria-label="Dismiss"
                             >
                                 <X className="w-5 h-5" />
