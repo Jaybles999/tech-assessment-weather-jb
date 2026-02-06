@@ -13,7 +13,7 @@ export const LocationBanner = ({ geolocation }: LocationBannerProps) => {
     return (
         <div className="fixed bottom-0 md:bottom-10 left-0 right-0 z-50 p-2 md:p-4 animate-fade-in">
             <div className="max-w-2xl mx-auto">
-                <div className="bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 rounded-lg md:rounded-xl p-2 md:p-4 shadow-2xl">
+                <div className="bg-blue-500/95 md:bg-blue-500/85 border border-primary-foreground/20 rounded-lg md:rounded-xl p-2 md:p-4 shadow-2xl">
                     <div className="flex items-center gap-4">
                         {/* icon */}
                         <div className="shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/50 rounded-full flex items-center justify-center">
@@ -35,7 +35,7 @@ export const LocationBanner = ({ geolocation }: LocationBannerProps) => {
                             <button
                                 onClick={requestLocation}
                                 disabled={isLocating}
-                                className="px-3 py-1.5 sm:px-4 sm:py-2 bg-blue-500 hover:bg-blue-400 disabled:bg-blue-500/50 text-primary-foreground text-sm font-medium rounded-md transition-colors cursor-pointer"
+                                className="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-foreground/20 hover:bg-primary-foreground/30 disabled:bg-blue-500/50 text-primary-foreground text-sm font-medium rounded-md transition-colors cursor-pointer"
                             >
                                 {isLocating ? 'Locating...' : 'Use Location'}
                             </button>

@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import type { DailyForecast } from '@/types/weather';
 import { DayCard } from '@/components/weather/day-card';
 import { useWeatherStore } from '@/stores/weather-store';
@@ -19,6 +21,14 @@ export const DayCardGrid = () => {
     const weather = useWeatherStore((state) => state.weather);
     const selectedDay = useWeatherStore((state) => state.selectedDay);
     const selectDay = useWeatherStore((state) => state.selectDay);
+
+    // center scroll on mount on mobile only
+    const scrollRef = useCallback((node: HTMLDivElement | null) => {
+        if (node) {
+            const maxScroll = node.scrollWidth - node.clientWidth;
+            node.scrollLeft = maxScroll / 2;
+        }
+    }, []);
 
     if (!weather) return null;
 
@@ -44,7 +54,7 @@ export const DayCardGrid = () => {
     return (
         <div className="w-full">
             {/* <h3 className="text-lg font-semibold mb-4 text-center">7-Day Overview</h3> */}
-            <div className="flex justify-center gap-3 overflow-x-auto pt-2 pb-4 px-1">
+            <div ref={scrollRef} className="flex gap-3 overflow-x-auto pt-2 pb-4 px-1">
                 {days.map((day, i) => (
                     <DayCard
                         key={day.date}
