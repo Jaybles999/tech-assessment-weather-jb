@@ -6,7 +6,6 @@ import { WelcomeScreen } from "./components/empty-states/welcome-screen";
 import { WeatherSkeleton } from "./components/empty-states/weather-skeleton";
 import { LastUpdated } from "./components/weather/last-updated";
 import { useGeolocation } from "./hooks/use-geolocation";
-import { LocationBanner } from "./components/weather/location-banner";
 
 export function App() {
 
@@ -45,8 +44,6 @@ export function App() {
                     <WelcomeScreen />
                 )}
             </div>
-
-            <LocationBanner geolocation={geolocation} />
 
         </MainLayout>
   );

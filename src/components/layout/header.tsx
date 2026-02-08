@@ -69,19 +69,23 @@ export const Header = () => {
                                 )}
                                 
                                 <Input
+                                    id="city-search-input"
                                     type="text"
                                     placeholder="Search city..."
                                     value={searchValue}
                                     onChange={(e) => setSearchValue(e.target.value)}
                                     onFocus={() => setIsFocused(true)}
                                     onBlur={() => setTimeout(() => setIsFocused(false), 150)}
-                                    className="pl-9 bg-primary-foreground/20 border-primary-foreground/30 text-primary-foreground placeholder:text-primary-foreground/60 focus:bg-primary-foreground/30"
+                                    className="pl-9 bg-primary-foreground/20 border-primary-foreground/30 
+                                    text-primary-foreground placeholder:text-primary-foreground/60 focus:bg-primary-foreground/30 
+                                    focus-visible:ring-primary-foreground/30 focus-visible:border-primary-foreground/50 transition-colors" 
                                 />
                             </div>
                             <Button
                                 type="submit"
                                 variant="secondary"
-                                className="bg-primary-foreground/20 hover:bg-primary-foreground/30 text-primary-foreground border-primary-foreground/30"
+                                className="bg-primary-foreground/20 hover:bg-primary-foreground/30 text-primary-foreground 
+                                border-primary-foreground/30 cursor-pointer"
                                 disabled={isSearching || !searchValue.trim()}
                             >
                                 Search
@@ -95,7 +99,8 @@ export const Header = () => {
                                     size="icon"
                                     onClick={requestLocation}
                                     disabled={isLocating}
-                                    className="bg-primary-foreground/20 hover:bg-primary-foreground/30 text-primary-foreground border-primary-foreground/30 transition-base shrink-0"
+                                    className="bg-primary-foreground/20 hover:bg-primary-foreground/30 text-primary-foreground 
+                                    border-primary-foreground/30 transition-base shrink-0 cursor-pointer"
                                     title="Use my location"
                                 >
                                     {isLocating ? (
